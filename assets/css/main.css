@@ -5,7 +5,7 @@
 
 @layer base {
   body {
-    @apply bg-[#151515] font-Roboto text-white;
+    @apply bg-[#a8a9ad] font-Roboto text-white;
   }
 }
 
@@ -37,4 +37,9 @@
   .error {
     @apply font-bold text-red-500 py-2;
   }
+
+  .md-title{
+    @apply text-3xl font-semibold text-green-600 
+  }
+
 }

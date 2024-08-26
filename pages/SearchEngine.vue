@@ -3,57 +3,57 @@
 
     <!-- For the checking progress and tallying search -->
     <div class="column blank">
-
-    </div>
-
-    <!-- Handles the search enginge -->
-    <div class="column search">
-      <div class="search-container">
-        <h1 class="title">Earn & Learn</h1>
-        <form class="search-form" @submit.prevent="handleSearch">
-          <input
-            v-model="query"
-            type="text"
-            :placeholder="placeholderMessage"
-            class="search-input"
-          />
-          <button type="submit" class="search-button">Search</button>
-        </form>
+      <div class="content">
+        <h1 class="md-title">Topics Covered Today</h1>
+      <div class="housing">
+          <ul >
+            <li>
+              <p v-if="sent_query">You searched {{ sent_query }}</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <!-- Manages Friends List -->
-    <div class="column friends">
-      <div class="friends-section">
-        <form @submit.prevent="addFriend" class="friend-form">
-          <input
-            v-model="newFriend"
-            type="text"
-            placeholder="Add a friend"
-            class="friend-input"
-          />
-          <button type="submit" class="friend-button">Add Friend</button>
-        </form>
-        <ul class="friends-list">
-          <li v-for="friend in friends" :key="friend">
-            {{ friend }}
-          </li>
-        </ul>
-      </div>
+  <!-- Handles the search enginge -->
+  <div class="column search">
+    <div class="search-container">
+      <h1 class="title">Earn & Learn</h1>
+      <form class="search-form" @submit.prevent="handleSearch">
+        <input v-model="query" type="text" :placeholder="placeholderMessage" class="search-input" />
+        <button type="submit" class="search-button">Search</button>
+      </form>
     </div>
+  </div>
+
+  <!-- Manages Friends List -->
+  <div class="column friends">
+    <div class="friends-section">
+      <form @submit.prevent="addFriend" class="friend-form">
+        <input v-model="newFriend" type="text" placeholder="Add a friend" class="friend-input" />
+        <button type="submit" class="friend-button">Add Friend</button>
+      </form>
+      <ul class="friends-list">
+        <li v-for="friend in friends" :key="friend">
+          {{ friend }}
+        </li>
+      </ul>
+    </div>
+  </div>
 
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { collection, getDocs, updateDoc, arrayUnion, doc} from 'firebase/firestore';
+import { collection, getDocs, updateDoc, arrayUnion, doc } from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
 import { useNuxtApp } from '#app';
 import { getAuth } from '@firebase/auth'; // Import Firebase Auth
 
 // Data variables
 const query = ref('');
+const sent_query = ref('');
 const placeholderMessage = ref('');
 const newFriend = ref('');
 const friends = ref<string[]>([]);
@@ -72,6 +72,8 @@ const handleSearch = () => {
   if (query.value) {
     const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query.value)}`;
     window.open(searchUrl, '_blank');
+
+    sent_query.value = query.value;
   }
 };
 
@@ -102,7 +104,7 @@ const addFriend = async () => {  // Get Firestore instance
           friends: arrayUnion(newF)
         });
         newFriend.value = '';
-        fetchFriends(); 
+        fetchFriends();
       } else {
         console.error('User is not logged in');
       }
@@ -118,7 +120,7 @@ const fetchFriends = async () => {
     const friendsCollection = collection($firestore, 'users');
     const querySnapshot = await getDocs(friendsCollection);
     friends.value = querySnapshot.docs.flatMap(doc => doc.data().friends || []);
-    } catch (error) {
+  } catch (error) {
     console.error('Error fetching friends: ', error);
   }
 };
@@ -132,9 +134,47 @@ const fetchFriends = async () => {
   justify-content: space-between;
 }
 
+.column.blank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+}
+
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #151515;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.housing {
+  margin-top: 20px;
+}
+
+.housing ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.housing ul li {
+  padding: 10px;
+  background-color: #eef;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.housing ul li p {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+}
+
 .column {
   flex: 1;
-  padding: 20px;
+  padding: 10px;
 }
 
 .search-container {
@@ -147,8 +187,7 @@ const fetchFriends = async () => {
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 20px;
-  color: grey;
-  text-shadow: rgb(193, 57, 57);
+  color: #151515;
 }
 
 .search-form {
@@ -184,13 +223,21 @@ const fetchFriends = async () => {
 
 .column.search {
   display: flex;
-  justify-content: center; /* Horizontally center */
-  align-items: center;     /* Vertically center */
-  height: 80vh;           /* Make the column take up the full viewport height */
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
 
 .search-container {
-  text-align: center;      /* Center the text inside the container */
+  text-align: center;
+  /* Center the text inside the container */
+}
+
+.column.friends{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
 }
 
 .friends-section {
