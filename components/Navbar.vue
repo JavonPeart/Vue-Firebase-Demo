@@ -9,6 +9,13 @@ const firebaseUser = useFirebaseUser();
                     <h1 class="text-xl md:text-2xl">Nuxt 3</h1>
                 </NuxtLink>
                 <img src="https://api.iconify.design/logos:nuxt-icon.svg" alt="nuxt">
+
+                <div class="mt-1 mb-3">
+                    <span class=" text-green-300 hover:text-green-600 transition duration-200 ease-in">
+                        <NuxtLink to="/SearchEngine">Search Engine</NuxtLink>
+                    </span>
+                </div>
+
             </div>
 
             <div class="flex-center space-x-4">
@@ -20,7 +27,9 @@ const firebaseUser = useFirebaseUser();
                 </div>
 
                 <div v-if="firebaseUser">
-                    <button @click="signOutUser()" class="py-1 px-3 bg-red-500 hover:bg-red-600 rounded-md transition duration-200 ease-in md:py-2 md:px-4">Sign Out</button>
+                    <button @click="signOutUser()"
+                        class="py-1 px-3 bg-red-500 hover:bg-red-600 rounded-md transition duration-200 ease-in md:py-2 md:px-4">Sign
+                        Out</button>
                 </div>
             </div>
         </nav>
