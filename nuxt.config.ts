@@ -3,26 +3,26 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/tailwindcss"],
 
   runtimeConfig: {
-    openaiApiKey: process.env.OPENAI_API_KEY,
+    // OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 
-    FIREBASE_API_KEY: "AIzaSyA6JO1QvIgOeArFgRBTJQZBkxr45yjtZ1o",
-    FIREBASE_AUTH_DOMAIN: "ngage-demo-2e589.firebaseapp.com",
-    FIREBASE_PROJECT_ID: "ngage-demo-2e589",
-    FIREBASE_STORAGE_BUCKET: "ngage-demo-2e589.appspot.com",
-    FIREBASE_MESSAGING_SENDER_ID: "1019833441830",
-    FIREBASE_APP_ID: "1:1019833441830:web:78ae615a66e097ab1510e7",
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     
     public: {
-      FIREBASE_API_KEY: "AIzaSyA6JO1QvIgOeArFgRBTJQZBkxr45yjtZ1o",
-      FIREBASE_AUTH_DOMAIN: "ngage-demo-2e589.firebaseapp.com",
-      FIREBASE_PROJECT_ID: "ngage-demo-2e589",
-      FIREBASE_STORAGE_BUCKET: "ngage-demo-2e589.appspot.com",
-      FIREBASE_MESSAGING_SENDER_ID: "1019833441830",
-      FIREBASE_APP_ID: "1:1019833441830:web:78ae615a66e097ab1510e7",
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     },
   },
 
   css: ["@/assets/css/main.css"],
 
-  compatibilityDate: "2024-08-25",
+  compatibilityDate: "2024-08-25"
 });

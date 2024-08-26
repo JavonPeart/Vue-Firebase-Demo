@@ -16,6 +16,11 @@ const firebaseUser = useFirebaseUser();
                     </span>
                 </div>
 
+                <div class="mt-1 mb-3">
+                    <span class=" text-green-300 hover:text-green-600 transition duration-200 ease-in">
+                        <NuxtLink to="/Chat">Chat</NuxtLink>
+                    </span>
+                </div>
             </div>
 
             <div class="flex-center space-x-4">
