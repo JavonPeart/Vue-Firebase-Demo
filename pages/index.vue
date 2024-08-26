@@ -1,18 +1,26 @@
 <script setup>
 import { required, email, helpers, minLength } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+
+
 const formData = reactive({
     email: "",
     password: ""
 });
+
+
 const loading = ref(false);
+
 const rules = computed(() => {
     return {
         email: { required: helpers.withMessage("Email is required", required), email },
         password: { required: helpers.withMessage("Password is required", required), minLength: minLength(8) },
     }
 });
+
+
 const v$ = useVuelidate(rules, formData);
+
 const handleSubmit = async () => {
     const result = await v$.value.$validate();
     if (result) {
@@ -23,6 +31,8 @@ const handleSubmit = async () => {
 
 }
 </script>
+
+
 <template>
     <div class="grid-layout">
         <div class="max-w-sm w-72 mt-8 py-2 border border-gray-900 rounded-md sm:w-80 md:border-none md:py-0 md:mt-14">

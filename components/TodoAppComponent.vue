@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { collection, getFirestore, query, onSnapshot, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import TrashIcon from "./Icons/TrashIcon.vue";
+
+
 const todo = ref("");
 const completed = ref(false);
 const handleAddTodo = async () => {

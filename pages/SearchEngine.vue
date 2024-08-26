@@ -35,7 +35,9 @@
           <button type="submit" class="friend-button">Add Friend</button>
         </form>
         <ul class="friends-list">
-          <li v-for="friend in friends" :key="friend">{{ friend }}</li>
+          <li v-for="friend in friends" :key="friend">
+            {{ friend }}
+          </li>
         </ul>
       </div>
     </div>
@@ -45,17 +47,17 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { useNuxtApp } from '#app';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, arrayUnion, doc} from 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
-
-
+import { useNuxtApp } from '#app';
+import { getAuth } from '@firebase/auth'; // Import Firebase Auth
 
 // Data variables
 const query = ref('');
 const placeholderMessage = ref('');
 const newFriend = ref('');
 const friends = ref<string[]>([]);
+const $firestore = getFirestore();
 
 // Array of placeholder messages
 const placeholders = [
@@ -64,10 +66,6 @@ const placeholders = [
   'Explore new learning materials...',
   'Discover jobs and educational resources...'
 ];
-
-// Fetch Firestore instance from Nuxt app
-const $firestore = getFirestore();
-
 
 // Method to handle the search logic
 const handleSearch = () => {
@@ -90,13 +88,24 @@ onMounted(() => {
 });
 
 // Method to add a friend
-const addFriend = async () => {
-  if (newFriend.value.trim()) {
+const addFriend = async () => {  // Get Firestore instance
+  const auth = getAuth();
+  const newF = newFriend.value.trim()
+
+  // Ensure the new friend input is not empty
+  if (newF) {
     try {
-      const friendsCollection = collection($firestore, 'friends');
-      await addDoc(friendsCollection, { name: newFriend.value.trim() });
-      newFriend.value = ''; // Clear input field
-      fetchFriends(); // Refresh the friends list
+      const userId = auth?.currentUser?.uid;
+      if (userId) {
+        const userDocRef = doc($firestore, 'users', userId);
+        await updateDoc(userDocRef, {
+          friends: arrayUnion(newF)
+        });
+        newFriend.value = '';
+        fetchFriends(); 
+      } else {
+        console.error('User is not logged in');
+      }
     } catch (error) {
       console.error('Error adding friend: ', error);
     }
@@ -106,13 +115,15 @@ const addFriend = async () => {
 // Method to fetch friends from Firestore
 const fetchFriends = async () => {
   try {
-    const friendsCollection = collection($firestore, 'friends');
+    const friendsCollection = collection($firestore, 'users');
     const querySnapshot = await getDocs(friendsCollection);
-    friends.value = querySnapshot.docs.map(doc => doc.data().name);
-  } catch (error) {
+    friends.value = querySnapshot.docs.flatMap(doc => doc.data().friends || []);
+    } catch (error) {
     console.error('Error fetching friends: ', error);
   }
 };
+
+
 </script>
 
 <style scoped>

@@ -2,6 +2,8 @@ import {
     collection, addDoc, getFirestore, Timestamp
 } from "firebase/firestore";
 import { getAuth } from "@firebase/auth";
+
+
 export const addTodo = async (todo: string, completed: boolean) => {
     const auth = getAuth();
     const db = getFirestore()
